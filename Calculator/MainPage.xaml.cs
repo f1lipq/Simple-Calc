@@ -74,13 +74,13 @@ namespace Calculator
 
             result = int.Parse(calcList[0]);
 
-            Debug.WriteLine(calcList.Count);
-
+            
             for (int i = 1; i < calcList.Count - 1; i+=2)
             {
                 addToTheResult(calcList[i], calcList[i + 1]);
             }
-            
+
+            calcList = sortOperation(calcList);
 
             for (int i = 0; i < calcList.Count; i++)
             {
@@ -125,6 +125,54 @@ namespace Calculator
             }
         }
 
+        private List<string> sortOperation(List<string> list) // ["1", "+", "4", "X" "2"]
+        {
+            List<string> sortedEq = new List<string>();
 
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i] == "X" || list[i] == "/")
+                {
+                    if (i > 1 && list[i - 2] == "-") sortedEq.Add(list[i - 2]);
+                    if (int.TryParse(list[i - 1], out int v1) && int.TryParse(list[i + 1], out int v2))
+                    {
+                        if (list[i] == "X") sortedEq.Add((v1 * v2).ToString());
+                        else if (list[i] == "/") sortedEq.Add((v1 / v2).ToString());
+                    }
+                    sortedEq.Add("+");
+                    if (i > 1) { list.RemoveRange(i - 2, 4); i -= 4; }
+                    else { list.RemoveRange(i - 1, 3); i -= 3; }
+
+                }
+            }
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                sortedEq.Add(list[i]);
+            }
+
+            deleteEqChar(sortedEq);
+
+            return sortedEq;
+        }
+
+        private void deleteEqChar(List<string> list)
+        {
+            for (int i = 0; i < list.Count; i++)
+            {
+                if ((list[i] == "+" && list[i + 1] == "-") || (list[i] == "-" && list[i + 1] == "+"))
+                {
+                    list[i + 1] = "-";
+                    list.RemoveAt(i);
+                    i -= 1;
+                }
+
+                else if ((list[i] == "-" && list[i + 1] == "-") || (list[i] == "+" && list[i + 1] == "+"))
+                {
+                    list.RemoveAt(i);
+                    i -= 1;
+                }
+            }
+        }
     }
 }
