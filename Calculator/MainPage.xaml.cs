@@ -20,6 +20,7 @@ namespace Calculator
         {
             calcList.Clear();
             showList(calcList);
+            OutputResult.Text = "";
         }
 
         private void OnParenthesesClicked(object sender, EventArgs e)
@@ -38,7 +39,7 @@ namespace Calculator
             {
                 calcList.Add(currentNumber);
                 currentNumber = "";
-                OutputEntry.Text += clickedButton.Text;
+                OutputEntry.Text += " " + clickedButton.Text + " ";
                 calcList.Add(clickedButton.Text);
             }
         }
@@ -72,21 +73,34 @@ namespace Calculator
                 currentNumber = "";
             }
 
-            result = int.Parse(calcList[0]);
-
-            
-            for (int i = 1; i < calcList.Count - 1; i+=2)
-            {
-                addToTheResult(calcList[i], calcList[i + 1]);
-            }
-
             calcList = sortOperation(calcList);
+
+            if (int.TryParse(calcList[0], out int firstNum1))
+            {
+                result = firstNum1;
+
+                for (int i = 1; i < calcList.Count - 1; i += 2)
+                {
+                    addToTheResult(calcList[i], calcList[i + 1]);
+                }
+            }
+            else if (int.TryParse(calcList[0] + calcList[1], out int firstNum2))
+            {
+                result = firstNum2;
+
+                for (int i = 2; i < calcList.Count - 1; i += 2)
+                {
+                    addToTheResult(calcList[i], calcList[i + 1]);
+                }
+            }
+            else result = 99999;
 
             for (int i = 0; i < calcList.Count; i++)
             {
                 Debug.WriteLine(calcList[i]);
             }
-            OutputEntry.Text += $"={result}";
+            OutputEntry.Text += " = ";
+            OutputResult.Text = $"{result}";
         }
 
 
@@ -128,21 +142,23 @@ namespace Calculator
         private List<string> sortOperation(List<string> list) // ["1", "+", "4", "X" "2"]
         {
             List<string> sortedEq = new List<string>();
-
-            for (int i = 0; i < list.Count; i++)
+            if (list.Count > 3)
             {
-                if (list[i] == "X" || list[i] == "/")
+                for (int i = 0; i < list.Count; i++)
                 {
-                    if (i > 1 && list[i - 2] == "-") sortedEq.Add(list[i - 2]);
-                    if (int.TryParse(list[i - 1], out int v1) && int.TryParse(list[i + 1], out int v2))
+                    if (list[i] == "X" || list[i] == "/")
                     {
-                        if (list[i] == "X") sortedEq.Add((v1 * v2).ToString());
-                        else if (list[i] == "/") sortedEq.Add((v1 / v2).ToString());
-                    }
-                    sortedEq.Add("+");
-                    if (i > 1) { list.RemoveRange(i - 2, 4); i -= 4; }
-                    else { list.RemoveRange(i - 1, 3); i -= 3; }
+                        if (i > 1 && list[i - 2] == "-") sortedEq.Add(list[i - 2]);
+                        if (int.TryParse(list[i - 1], out int v1) && int.TryParse(list[i + 1], out int v2))
+                        {
+                            if (list[i] == "X") sortedEq.Add((v1 * v2).ToString());
+                            else if (list[i] == "/") sortedEq.Add((v1 / v2).ToString());
+                        }
+                        sortedEq.Add("+");
+                        if (i > 1) { list.RemoveRange(i - 2, 4); i -= 4; }
+                        else { list.RemoveRange(i - 1, 3); i -= 3; }
 
+                    }
                 }
             }
 
