@@ -13,6 +13,7 @@ namespace Calculator
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("Bitcount.ttf", "PixelFont");
                 });
 
 #if DEBUG

@@ -17,6 +17,8 @@
             FontSize="35"
             Margin="20, 0, 20, 0"
             HorizontalTextAlignment="End"
+            FontFamily="PixelFont"
+            
             />
         <Label
             Grid.Row="1"
