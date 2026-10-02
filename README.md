@@ -1,5 +1,6 @@
 # Simple Calculator project
 Project made to learn .NET MAUI
+
 Still improving...
 
 

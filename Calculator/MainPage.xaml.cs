@@ -1,10 +1,16 @@
 ﻿
+using Calculator.Resources.Styles.Themes;
 using System.Diagnostics;
 
 namespace Calculator
 {
     public partial class MainPage : ContentPage
     {
+        ResourceDictionary[] themes =
+        {
+            new DarkTheme(),
+            new LightTheme()
+        };
 
         List<string> calcList = new List<string>();
         string currentNumber = "";
@@ -14,6 +20,22 @@ namespace Calculator
         public MainPage()
         {
             InitializeComponent();
+
+            styles.SelectedIndex = 0;
+        }
+
+        private void ChangeStyle(object sender, EventArgs e)
+        {
+            var picker = (Picker)sender;
+            int selectedIndex = picker.SelectedIndex;
+
+            ICollection<ResourceDictionary> mergedDictionaries = Application.Current.Resources.MergedDictionaries;
+            if (mergedDictionaries != null && selectedIndex >= 0 && selectedIndex < themes.Length)
+            {
+                mergedDictionaries.Clear();
+                mergedDictionaries.Add(themes[selectedIndex]);
+            }
+
         }
 
         private void OnClearClicked(object sender, EventArgs e)

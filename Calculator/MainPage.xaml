@@ -2,23 +2,45 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Calculator.MainPage"
-             Title="">
+             Title=""
+             BackgroundColor="{DynamicResource PageBackgroundColor}"
+             >
 
     <Grid RowDefinitions="0.8*,0.8*,*,*,*,*,*"
       ColumnDefinitions="*,*,*,*"
           RowSpacing="1"
           ColumnSpacing="1">
+        <HorizontalStackLayout
+            Grid.Row="0"
+            Grid.Column="0">
+            <Picker x:Name="styles"
+                    Title="Styles"
+                    FontSize="10"
+                    SelectedIndexChanged="ChangeStyle"
+                    HeightRequest="40"
+                    Margin="10, -20, 0, 0"
+                    TextColor="{DynamicResource TextColor}">
+                <Picker.Items>
+                    <x:String>Dark mode</x:String>
+                    <x:String>White mode</x:String>
+                    <x:String>Orange</x:String>
+                    <x:String>Blue</x:String>
+                    <x:String>Green</x:String>
+                    <x:String>Old macOS</x:String>
+                </Picker.Items>
+            </Picker>
+
+        </HorizontalStackLayout>
         <Label
             Grid.Row="0"
-            Grid.Column="0"
-            Grid.ColumnSpan="4"
+            Grid.Column="1"
+            Grid.ColumnSpan="3"
             x:Name="OutputEntry"
             VerticalTextAlignment="Center"
             FontSize="35"
             Margin="20, 0, 20, 0"
             HorizontalTextAlignment="End"
-            FontFamily="PixelFont"
-            
+            TextColor="{DynamicResource TextColor}"
             />
         <Label
             Grid.Row="1"
@@ -29,148 +51,149 @@
             FontSize="35"
             Margin="20, 0, 20, 0"
             HorizontalTextAlignment="End"
-            TextColor="GhostWhite"
+            TextColor="{DynamicResource TextColor}"
             />
 
         <Button Text="AC"
     Grid.Row="2"
     Grid.Column="0"
     CornerRadius="0"
-    Style="{StaticResource Button2}"
-    Clicked="OnClearClicked"/>
+    Clicked="OnClearClicked"
+    Style="{DynamicResource FunctionButton}"
+                FontFamily="PixelFont"/>
 
         <Button Text="()"
     Grid.Row="2"
     Grid.Column="1"
     CornerRadius="0"
-    Style="{StaticResource Button2}"
-    Clicked="OnParenthesesClicked"/>
+    Clicked="OnParenthesesClicked"
+                Style="{DynamicResource FunctionButton}"/>
 
         <Button Text="%"
     Grid.Row="2"
     Grid.Column="2"
     CornerRadius="0"
-    Style="{StaticResource Button2}"
-    Clicked="OnPercentClicked"/>
+    Clicked="OnPercentClicked"
+                Style="{DynamicResource FunctionButton}"/>
 
         <Button Text="/"
     Grid.Row="2"
     Grid.Column="3"
     CornerRadius="0"
-    Style="{StaticResource Button2}"
-    Clicked="OnOperatorClicked"/>
+    Clicked="OnOperatorClicked"
+                Style="{DynamicResource FunctionButton}"/>
 
         <Button Text="7"
     Grid.Row="3"
     Grid.Column="0"
     CornerRadius="0"
-    Style="{StaticResource Button1}"
-    Clicked="OnDigitClicked"/>
+    Clicked="OnDigitClicked"
+                Style="{DynamicResource NumberButton}"/>
 
         <Button Text="8"
     Grid.Row="3"
     Grid.Column="1"
     CornerRadius="0"
-    Style="{StaticResource Button1}"
-    Clicked="OnDigitClicked"/>
+    Clicked="OnDigitClicked"
+                Style="{DynamicResource NumberButton}"/>
 
         <Button Text="9"
     Grid.Row="3"
     Grid.Column="2"
     CornerRadius="0"
-    Style="{StaticResource Button1}"
-    Clicked="OnDigitClicked"/>
+    Clicked="OnDigitClicked"
+                Style="{DynamicResource NumberButton}"/>
 
         <Button Text="X"
     Grid.Row="3"
     Grid.Column="3"
     CornerRadius="0"
-    Style="{StaticResource Button2}"
-    Clicked="OnOperatorClicked"/>
+    Clicked="OnOperatorClicked"
+                Style="{DynamicResource FunctionButton}"/>
 
         <Button Text="4"
     Grid.Row="4"
     Grid.Column="0"
     CornerRadius="0"
-    Style="{StaticResource Button1}"
-    Clicked="OnDigitClicked"/>
+    Clicked="OnDigitClicked"
+                Style="{DynamicResource NumberButton}"/>
 
         <Button Text="5"
     Grid.Row="4"
     Grid.Column="1"
     CornerRadius="0"
-    Style="{StaticResource Button1}"
-    Clicked="OnDigitClicked"/>
+    Clicked="OnDigitClicked"
+                Style="{DynamicResource NumberButton}"/>
 
         <Button Text="6"
     Grid.Row="4"
     Grid.Column="2"
     CornerRadius="0"
-    Style="{StaticResource Button1}"
-    Clicked="OnDigitClicked"/>
+    Clicked="OnDigitClicked"
+                Style="{DynamicResource NumberButton}"/>
 
         <Button Text="-"
     Grid.Row="4"
     Grid.Column="3"
     CornerRadius="0"
-    Style="{StaticResource Button2}"
-    Clicked="OnOperatorClicked"/>
+    Clicked="OnOperatorClicked"
+                Style="{DynamicResource FunctionButton}"/>
 
         <Button Text="1"
     Grid.Row="5"
     Grid.Column="0"
     CornerRadius="0"
-    Style="{StaticResource Button1}"
-    Clicked="OnDigitClicked"/>
+    Clicked="OnDigitClicked"
+                Style="{DynamicResource NumberButton}"/>
 
         <Button Text="2"
     Grid.Row="5"
     Grid.Column="1"
     CornerRadius="0"
-    Style="{StaticResource Button1}"
-    Clicked="OnDigitClicked"/>
+    Clicked="OnDigitClicked"
+                Style="{DynamicResource NumberButton}"/>
 
         <Button Text="3"
     Grid.Row="5"
     Grid.Column="2"
     CornerRadius="0"
-    Style="{StaticResource Button1}"
-    Clicked="OnDigitClicked"/>
+    Clicked="OnDigitClicked"
+                Style="{DynamicResource NumberButton}"/>
 
         <Button Text="+"
     Grid.Row="5"
     Grid.Column="3"
     CornerRadius="0"
-    Style="{StaticResource Button2}"
-    Clicked="OnOperatorClicked"/>
+    Clicked="OnOperatorClicked"
+                Style="{DynamicResource FunctionButton}"/>
 
         <Button Text="0"
     Grid.Row="6"
     Grid.Column="0"
     CornerRadius="0"
-    Style="{StaticResource Button1}"
-    Clicked="OnDigitClicked"/>
+    Clicked="OnDigitClicked"
+                Style="{DynamicResource NumberButton}"/>
 
         <Button Text=","
     Grid.Row="6"
     Grid.Column="1"
     CornerRadius="0"
-    Style="{StaticResource Button1}"
-    Clicked="OnDecimalClicked"/>
+    Clicked="OnDecimalClicked"
+                Style="{DynamicResource NumberButton}"/>
 
         <Button Text="DEL"
     Grid.Row="6"
     Grid.Column="2"
     CornerRadius="0"
-    Style="{StaticResource Button1}"
-    Clicked="OnDeleteClicked"/>
+    Clicked="OnDeleteClicked"
+                Style="{DynamicResource NumberButton}"/>
 
         <Button Text="="
     Grid.Row="6"
     Grid.Column="3"
     CornerRadius="0"
-    Style="{StaticResource Button2}"
-    Clicked="OnEqualsClicked"/>
+    Clicked="OnEqualsClicked"
+                Style="{DynamicResource FunctionButton}"/>
 
 
 
