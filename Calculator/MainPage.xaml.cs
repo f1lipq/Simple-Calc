@@ -9,7 +9,11 @@ namespace Calculator
         ResourceDictionary[] themes =
         {
             new DarkTheme(),
-            new LightTheme()
+            new LightTheme(),
+            new OrangeTheme(),
+            new BlueTheme(),
+            new GreenTheme(),
+            new MacOsTheme()
         };
 
         List<string> calcList = new List<string>();

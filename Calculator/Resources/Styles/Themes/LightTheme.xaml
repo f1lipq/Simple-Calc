@@ -12,7 +12,6 @@
         <Setter Property="BackgroundColor" Value="#E0E0E0" />
         <Setter Property="TextColor" Value="{StaticResource TextColor}" />
         <Setter Property="FontSize" Value="24" />
-        <Setter Property="FontFamily" Value="PixelFont"/>
     </Style>
 
     <Style x:Key="FunctionButton" TargetType="Button">

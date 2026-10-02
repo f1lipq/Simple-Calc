@@ -3,6 +3,22 @@ Project made to learn .NET MAUI
 
 Still improving...
 
+## Current screenshots
+
+<h3>Dark Mode, Light Mode, Orange Theme</h3>
+<p align="center">
+    <img src="Screenshots/dark-mode.png" width="200">
+    <img src="Screenshots/light-mode.png" width="200">
+    <img src="Screenshots/orange-theme.png" width="200">
+</p>
+<br>
+<h3>Blue Theme, Green Theme, "macOs" alike Theme</h3>
+<p align="center">
+    <img src="Screenshots/blue-theme.png" width="200">
+    <img src="Screenshots/green-theme.png" width="200">
+    <img src="Screenshots/macos-alike-theme.png" width="200">
+</p>
+
 
 ## Fonts
 

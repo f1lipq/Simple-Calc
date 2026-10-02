@@ -15,6 +15,7 @@
             Grid.Column="0">
             <Picker x:Name="styles"
                     Title="Styles"
+                    TitleColor="{DynamicResource TextColor}"
                     FontSize="10"
                     SelectedIndexChanged="ChangeStyle"
                     HeightRequest="40"
@@ -26,7 +27,7 @@
                     <x:String>Orange</x:String>
                     <x:String>Blue</x:String>
                     <x:String>Green</x:String>
-                    <x:String>Old macOS</x:String>
+                    <x:String>"macOS"</x:String>
                 </Picker.Items>
             </Picker>
 
