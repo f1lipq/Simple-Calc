@@ -18,6 +18,9 @@ namespace Calculator
 
         List<string> calcList = new List<string>();
         string currentNumber = "";
+        bool isOperator = false;
+        bool isNumber = false;
+        bool isResultOn = false;
 
         int result = 0;
 
@@ -26,6 +29,15 @@ namespace Calculator
             InitializeComponent();
 
             styles.SelectedIndex = 0;
+            /*
+            int currentStyleIndex = Preferences.Get("CurrentStyleIndex", 0);
+            ICollection<ResourceDictionary> mergedDictionaries = Application.Current.Resources.MergedDictionaries;
+            if (mergedDictionaries != null && currentStyleIndex >= 0 && currentStyleIndex < themes.Length)
+            {
+                mergedDictionaries.Clear();
+                mergedDictionaries.Add(themes[currentStyleIndex]);
+            }
+            */
         }
 
         private void ChangeStyle(object sender, EventArgs e)
@@ -38,7 +50,10 @@ namespace Calculator
             {
                 mergedDictionaries.Clear();
                 mergedDictionaries.Add(themes[selectedIndex]);
+                //Preferences.Set("CurrentStyleIndex", selectedIndex);
             }
+
+            //Debug.WriteLine(Preferences.Get("CurrentStyleIndex", 0));
 
         }
 
@@ -47,6 +62,7 @@ namespace Calculator
             calcList.Clear();
             showList(calcList);
             OutputResult.Text = "";
+            isResultOn = false;
         }
 
         private void OnParenthesesClicked(object sender, EventArgs e)
@@ -63,10 +79,18 @@ namespace Calculator
         {
             if (sender is Button clickedButton)
             {
-                calcList.Add(currentNumber);
-                currentNumber = "";
-                OutputEntry.Text += " " + clickedButton.Text + " ";
-                calcList.Add(clickedButton.Text);
+                if (!isOperator)
+                {
+                    if (isNumber)
+                    {
+                        calcList.Add(currentNumber);
+                        currentNumber = "";
+                    }
+                    OutputEntry.Text += " " + clickedButton.Text + " ";
+                    calcList.Add(clickedButton.Text);
+                    isOperator = true;
+                    isNumber = false;
+                }
             }
         }
 
@@ -76,6 +100,9 @@ namespace Calculator
             {
                 OutputEntry.Text += clickedButton.Text;
                 currentNumber += clickedButton.Text;
+                isOperator = false;
+                isNumber = true;
+
             }
         }
 
@@ -91,42 +118,48 @@ namespace Calculator
 
         private void OnEqualsClicked(object sender, EventArgs e)
         {
-            
-            Debug.WriteLine($"Result before: {result}");
-            if (sender is Button clickedButton)
+            if (!isResultOn)
             {
                 calcList.Add(currentNumber);
                 currentNumber = "";
-            }
 
-            calcList = sortOperation(calcList);
 
-            if (int.TryParse(calcList[0], out int firstNum1))
-            {
-                result = firstNum1;
+                calcList = sortOperation(calcList);
 
-                for (int i = 1; i < calcList.Count - 1; i += 2)
+                if (int.TryParse(calcList[0], out int firstNum1))
                 {
-                    addToTheResult(calcList[i], calcList[i + 1]);
-                }
-            }
-            else if (int.TryParse(calcList[0] + calcList[1], out int firstNum2))
-            {
-                result = firstNum2;
+                    Debug.WriteLine("calcList[0] IS int");
+                    result = firstNum1;
 
-                for (int i = 2; i < calcList.Count - 1; i += 2)
+                    for (int i = 1; i < calcList.Count - 1; i += 2)
+                    {
+                        addToTheResult(calcList[i], calcList[i + 1]);
+                    }
+                }
+                else if (int.TryParse((calcList[0] + calcList[1]).ToString(), out int firstNum2))
                 {
-                    addToTheResult(calcList[i], calcList[i + 1]);
-                }
-            }
-            else result = 99999;
+                    Debug.WriteLine("calcList[0] is NOT an int");
+                    result = firstNum2;
 
-            for (int i = 0; i < calcList.Count; i++)
-            {
-                Debug.WriteLine(calcList[i]);
+                    for (int i = 2; i < calcList.Count - 1; i += 2)
+                    {
+                        addToTheResult(calcList[i], calcList[i + 1]);
+                    }
+                }
+                else Debug.WriteLine($"ERROR");
+
+
+
+
+                for (int i = 0; i < calcList.Count; i++)
+                {
+                    Debug.WriteLine(calcList[i]);
+                }
+                OutputEntry.Text += " = ";
+                OutputResult.Text = $"{result}";
+
+                isResultOn = true;
             }
-            OutputEntry.Text += " = ";
-            OutputResult.Text = $"{result}";
         }
 
 
