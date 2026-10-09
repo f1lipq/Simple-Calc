@@ -22,7 +22,7 @@ namespace Calculator
         bool isNumber = false;
         bool isResultOn = false;
 
-        int result = 0;
+        float result = 0;
 
         public MainPage()
         {
@@ -99,29 +99,34 @@ namespace Calculator
         {
             if (sender is Button clickedButton)
             {
-                OutputEntry.Text += clickedButton.Text;
+                int eqLength = calcList.Count;
                 isOperator = false;
                 isNumber = true;
                 isResultOn = false;
-                if (calcList.Count > 0 && int.TryParse(calcList[calcList.Count - 1], out int res))
+                if (calcList.Count > 0 && float.TryParse(calcList[eqLength - 1], out float res))
                 {
-                    calcList[calcList.Count - 1] += clickedButton.Text;
+                    if (clickedButton.Text == "," && calcList[eqLength - 1].Contains(","))
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        OutputEntry.Text += clickedButton.Text;
+                        calcList[eqLength - 1] += clickedButton.Text;
+                    }
                 }
-                else
+                else if (clickedButton.Text != ",")
                 {
+                    OutputEntry.Text += clickedButton.Text;
                     calcList.Add(clickedButton.Text);
                 }
-                for (int i = 0; i < calcList.Count; i++)
+                for (int i = 0; i < eqLength; i++)
                 {
                     Debug.Write($"[{calcList[i]}], ");
                 }
                 Debug.Write($"\ncalcList.Count = {calcList.Count}");
+                
             }
-        }
-
-        private void OnDecimalClicked(object sender, EventArgs e)
-        {
-
         }
 
         private void OnDeleteClicked(object sender, EventArgs e)
@@ -144,24 +149,24 @@ namespace Calculator
             {
                 calcList = sortOperation(calcList);
 
-                if (int.TryParse(calcList[0], out int firstNum1))
+                if (float.TryParse(calcList[0], out float firstNum1))
                 {
                     Debug.WriteLine("calcList[0] IS int");
                     result = firstNum1;
 
                     for (int i = 1; i < calcList.Count - 1; i += 2)
                     {
-                        addToTheResult(calcList[i], calcList[i + 1]);
+                        if(!addToTheResult(calcList[i], calcList[i + 1])) return;
                     }
                 }
-                else if (int.TryParse((calcList[0] + calcList[1]).ToString(), out int firstNum2))
+                else if (float.TryParse((calcList[0] + calcList[1]).ToString(), out float firstNum2))
                 {
                     Debug.WriteLine("calcList[0] is NOT an int");
                     result = firstNum2;
 
                     for (int i = 2; i < calcList.Count - 1; i += 2)
                     {
-                        addToTheResult(calcList[i], calcList[i + 1]);
+                        if(!addToTheResult(calcList[i], calcList[i + 1])) return;
                     }
                 }
                 else Debug.WriteLine($"ERROR");
@@ -181,30 +186,33 @@ namespace Calculator
         }
 
 
-        private int addToTheResult(string o, string strNumber)
+        private bool addToTheResult(string o, string strNumber)
         {
-            int number = int.Parse(strNumber);
+            float number = float.Parse(strNumber);
+            Debug.WriteLine($"Number: {number}");
 
             if (o == "+")
             {
-                return result += number;
+                result += number;
             }
             else if (o == "-")
             {
-                return result -= number;
+                result -= number;
             }
             else if (o == "X")
             {
-                return result *= number;
+                result *= number;
             }
-            else if (o == "/")
+            else if (o == "/" && number != 0)
             {
-                return result /= number;
+                result /= number;
             }
             else
             {
-                return 0;
+                OutputResult.Text = "ERROR";
+                return false;
             }
+            return true;
         }
 
         private void showList<T>(List<T> list)
@@ -231,7 +239,7 @@ namespace Calculator
                     if (list[i] == "X" || list[i] == "/")
                     {
                         if (i > 1 && list[i - 2] == "-") sortedEq.Add(list[i - 2]);
-                        if (int.TryParse(list[i - 1], out int v1) && int.TryParse(list[i + 1], out int v2))
+                        if (float.TryParse(list[i - 1], out float v1) && float.TryParse(list[i + 1], out float v2))
                         {
                             if (list[i] == "X") sortedEq.Add((v1 * v2).ToString());
                             else if (list[i] == "/") sortedEq.Add((v1 / v2).ToString());

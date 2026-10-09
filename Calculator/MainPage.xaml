@@ -179,7 +179,7 @@
     Grid.Row="6"
     Grid.Column="1"
     CornerRadius="0"
-    Clicked="OnDecimalClicked"
+    Clicked="OnDigitClicked"
                 Style="{DynamicResource NumberButton}"/>
 
         <Button Text="DEL"
