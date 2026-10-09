@@ -81,15 +81,16 @@ namespace Calculator
             {
                 if (!isOperator)
                 {
-                    if (isNumber)
-                    {
-                        calcList.Add(currentNumber);
-                        currentNumber = "";
-                    }
-                    OutputEntry.Text += " " + clickedButton.Text + " ";
                     calcList.Add(clickedButton.Text);
+                    showList(calcList);
                     isOperator = true;
                     isNumber = false;
+                    isResultOn = false;
+                    for (int i = 0; i < calcList.Count; i++)
+                    {
+                        Debug.Write($"[{calcList[i]}], ");
+                    }
+                    Debug.Write($"\ncalcList.Count = {calcList.Count}");
                 }
             }
         }
@@ -99,10 +100,22 @@ namespace Calculator
             if (sender is Button clickedButton)
             {
                 OutputEntry.Text += clickedButton.Text;
-                currentNumber += clickedButton.Text;
                 isOperator = false;
                 isNumber = true;
-
+                isResultOn = false;
+                if (calcList.Count > 0 && int.TryParse(calcList[calcList.Count - 1], out int res))
+                {
+                    calcList[calcList.Count - 1] += clickedButton.Text;
+                }
+                else
+                {
+                    calcList.Add(clickedButton.Text);
+                }
+                for (int i = 0; i < calcList.Count; i++)
+                {
+                    Debug.Write($"[{calcList[i]}], ");
+                }
+                Debug.Write($"\ncalcList.Count = {calcList.Count}");
             }
         }
 
@@ -113,17 +126,22 @@ namespace Calculator
 
         private void OnDeleteClicked(object sender, EventArgs e)
         {
-
+            if (calcList.Count > 0 && calcList[calcList.Count - 1].Length > 1)
+            {
+                calcList[calcList.Count - 1] = calcList[calcList.Count - 1].Substring(0, calcList[calcList.Count - 1].Length - 1);
+                showList(calcList);
+            }
+            else if (calcList.Count > 0)
+            {
+                calcList.RemoveAt(calcList.Count - 1);
+                showList(calcList);
+            }
         }
 
         private void OnEqualsClicked(object sender, EventArgs e)
         {
             if (!isResultOn)
             {
-                calcList.Add(currentNumber);
-                currentNumber = "";
-
-
                 calcList = sortOperation(calcList);
 
                 if (int.TryParse(calcList[0], out int firstNum1))
@@ -194,15 +212,20 @@ namespace Calculator
             OutputEntry.Text = "";
             for (int i = 0; i < list.Count; i++)
             {
-                OutputEntry.Text += list[i];
+                OutputEntry.Text += list[i] + " ";
             }
         }
 
-        private List<string> sortOperation(List<string> list) // ["1", "+", "4", "X" "2"]
+        private List<string> sortOperation(List<string> list) // ["2", "X", "4"]
         {
+            for (int i = 0; i < list.Count; i++)
+            {
+                Debug.WriteLine($"list object: [{list[i]}]");
+            }
             List<string> sortedEq = new List<string>();
             if (list.Count > 3)
             {
+                Debug.WriteLine($"list.Count = {list.Count}");
                 for (int i = 0; i < list.Count; i++)
                 {
                     if (list[i] == "X" || list[i] == "/")
